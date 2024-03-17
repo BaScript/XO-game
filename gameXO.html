@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X-O game</title>
+    <link rel="stylesheet" href="jeu.css">
+</head>
+<body>
+    
+ 
+    <div class="container">
+        <h1>Tic Tac Toe</h1>
+        <button id="xo">X / O</button>        
+        <div id="grille" class="grille"> 
+        <!-- la div d'Id grille est la div contenant les cellules x / O - 9 cellules -->
+        <!--
+            <div onclick="clicCellule(0)" class="cell"></div>
+            <div onclick="clicCellule(1)" class="cell"></div>
+            <div onclick="clicCellule(2)" class="cell"></div>
+            <div onclick="clicCellule(3)" class="cell"></div>
+            <div onclick="clicCellule(4)" class="cell"></div>
+            <div onclick="clicCellule(5)" class="cell"></div>
+            <div onclick="clicCellule(6)" class="cell"></div>
+            <div onclick="clicCellule(7)" class="cell"></div>
+            <div onclick="clicCellule(8)" class="cell"></div>
+        -->
+        </div>
+        <button id="reset">Recommencer</button>
+        <p id="tour"></p>
+        <p id="win"></p>
+    </div>
+
+<script>
+
+    const grille = document.getElementById('grille');
+    let tour = document.getElementById('tour');
+    const win = document.getElementById('win');
+    const reset = document.getElementById("reset");
+
+    let joueurEnTour = 'X';
+    let etatGrille = ['', '', '', '', '', '', '', '', ''];
+    let jeu = true;
+        
+    const gagnants = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], 
+        [0, 4, 8], [2, 4, 6] 
+    ];
+
+    etatGrille.forEach((item, index) => {
+        var cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.addEventListener('click', () => clicCellule(index));
+        grille.appendChild(cell);
+    });
+
+    tour.textContent = `Tour de : ${joueurEnTour}`; 
+
+    function clicCellule(index) {
+        if (etatGrille[index] === '' && jeu) {
+            etatGrille[index] = joueurEnTour;
+            grille.children[index].textContent = joueurEnTour;
+            validertour();
+            joueurEnTour = joueurEnTour === 'X' ? 'O' : 'X';
+            tour.textContent = `Tour de : ${joueurEnTour}`; 
+        }
+
+    }
+
+    function validertour() {
+        let victoire = false;
+        for (let i = 0; i < gagnants.length; i++) {
+            const [a, b, c] = gagnants[i];
+            if (etatGrille[a] && etatGrille[a] === etatGrille[b] && etatGrille[a] === etatGrille[c]) {
+                victoire = true;
+                break;
+            }
+        }
+
+        if (victoire || !etatGrille.includes('')) {
+            win.style.display = "block";
+            tour.style.display = "none"
+            jeu = false;
+        }
+
+        if (victoire) {
+            win.textContent = `${joueurEnTour} a gagné !`;
+        } else if(!etatGrille.includes('')) {
+            win.textContent = "Match nul !"
+        }
+        
+    }
+
+    function renitialiser() {
+        joueurEnTour = 'X';
+        etatGrille = ['', '', '', '', '', '', '', '', ''];
+        jeu = true;
+        tour.style.display = "block";
+        tour.textContent = `Tour de : ${joueurEnTour}`; 
+        win.style.display = "none";
+        
+
+        for(var i = 0; i < grille.children.length; i++) {
+            grille.children[i].textContent = '';
+        }
+
+    }
+    reset.addEventListener("click", renitialiser);
+
+</script>
+</body>
+</html>
