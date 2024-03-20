@@ -8,10 +8,12 @@
 </head>
 <body>
     
-    <div class="body"> </div>
+ <div class="body">
+</div>
+
     <div class="container">
         <h1>Tic Tac Toe</h1>
-        <button id="xo">X / O</button>        
+        <h2 id="xo">X - O</h2>        
         <div id="grille" class="grille"> 
         <!--
             <div onclick="clicCellule(0)" class="cell"></div>
@@ -25,7 +27,7 @@
             <div onclick="clicCellule(8)" class="cell"></div>
         -->
         </div>
-        <button id="reset">Recommencer</button>
+        <button id="reset"><span>Recommencer</span></button>
         <p id="tour"></p>
         <p id="win"></p>
     </div>
@@ -33,7 +35,7 @@
 
     const grille = document.getElementById('grille');
     let tour = document.getElementById('tour');
-    const win = document.getElementById('win');
+    let win = document.getElementById('win');
     const reset = document.getElementById("reset");
     
 
@@ -54,8 +56,10 @@
         cell.addEventListener('click', () => clicCellule(index));
         grille.appendChild(cell);
     });
-    tour.textContent = `Tour de : ${joueurEnTour}`; 
 
+    win.style.display = "none";
+    tour.textContent = `Tour de : ${joueurEnTour}`; 
+    
     function clicCellule(index) {
         if (etatGrille[index] === '' && jeu) {
             etatGrille[index] = joueurEnTour;
